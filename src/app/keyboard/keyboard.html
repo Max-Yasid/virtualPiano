@@ -1,0 +1,53 @@
+<main class="relative flex flex-col justify-between">
+    <section>
+        <app-paper-background></app-paper-background>
+        <header class="p-10 flex flex-row gap-8">
+            <mat-form-field appearance="outline" class="select-field">
+                <mat-label>Instrumento</mat-label>
+                <mat-select (selectionChange)="selectedInstrument.set($event.value)">
+                    @for (instrument of instruments;track instrument){
+                    <mat-option [value]="instrument">{{instrument}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="select-field">
+                <mat-label>Canción</mat-label>
+                <mat-select [formControl]="selectedSong" [panelWidth]="null">
+                    @for (song of songs;track song){
+                    <mat-option [value]="song.song">{{song.name}} - {{song.artist}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </header>
+    </section>
+    <section class="flex flex-col items-center justify-center relative z-20 mx-auto h-fit my-auto">
+        <ul class="set flex">
+            @for (note of keyNotesAsArray; track note.keyboardKey){
+            <li [id]="note.soundNote"
+                [class]="'flex flex-col justify-end items-center ' + note.order + ' ' + note.color"
+                (mousedown)="playNote(note.soundNote)">{{note.keyboardKey}}</li>
+            }
+        </ul>
+    </section>
+    <footer class="relative flex items-center justify-between w-full px-10">
+        <div #audioWaves class="absolute left-0 right-0 bottom-0 h-[calc(20dvh)] w-[calc(50dvw)] mx-auto z-0"></div>
+
+        <div class="relative flex items-center justify-center">
+            <button #btnPlay (click)="playSong()" mat-fab color="primary" class="relative z-10">
+                <mat-icon>play_arrow</mat-icon>
+            </button>
+        </div>
+        <div id="volume" class="relative flex flex-col">
+            <div id="volumeSlider" class="bottom-12 right-1/6">
+                <mat-slider max="100" min="0" (input)="changeVolume($event)">
+                    <input matSliderThumb [value]="defaultVolume">
+                </mat-slider>
+            </div>
+            <div id="volumeIcon">
+                <img src="assets/icons/volume.svg" width="64" height="64" />
+            </div>
+        </div>
+    </footer>
+
+</main>

@@ -1,0 +1,12 @@
+<div class="top-0 left-0 w-screen h-screen flex flex-col overflow-hidden">
+    @for( row of grid; track row;let i =$index) {
+    <div [style]="'min-width: ' + squareSize * squaresRowLength + 1 + 'px;max-height: ' + squareSize + 'px'"
+        class="overflow-visible inline-block box-border">
+        @for(square of row; track square; let j = $index) {
+        <div #squareDiv (click)="toggleBackgroundColor(squareDiv)" (mouseover)="addGrayBorderToSiblings(i,j)" [style]="'width: ' + squareSize + 'px;height: ' + squareSize + 'px'"
+            [class]="'border-solid border inline-block border-gray-200 hover:border-gray-400 box-border square'">
+        </div>
+        }
+    </div>
+    }
+</div>
