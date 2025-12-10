@@ -48,7 +48,7 @@ interface PianoKey {
   styleUrl: './keyboard.css',
 })
 export class Keyboard implements AfterViewInit {
-  instruments = ['piano', '8 bit computer'];
+  instruments = ['piano', '8_bit_computer'];
   selectedInstrument = signal(this.instruments[0]);
   instrumentSounds: Record<string, AudioBuffer> = {};
 
@@ -215,7 +215,7 @@ export class Keyboard implements AfterViewInit {
     source.connect(this.gainNode);
     const now = this.audioContext.currentTime;
     source.start(now);
-    if (this.selectedInstrument() === '8 bit computer') source.stop(now + 0.3);
+    if (this.selectedInstrument() === '8_bit_computer') source.stop(now + 0.3);
   }
 
   async loadAudioBuffer(note: string, exts = ['mp3', 'ogg', 'wav']): Promise<void | Response> {
