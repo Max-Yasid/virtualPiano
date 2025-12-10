@@ -90,11 +90,9 @@ export class Keyboard implements AfterViewInit {
             let buffer: AudioBuffer | undefined;
 
             await this.loadAudioBuffer(note.soundNote)
-              .then((res) => {
-                if (res) return res.arrayBuffer();
-                throw new Error();
+              .then((res): any => {
+                if (res) return res;
               })
-              .then((arr) => this.audioContext?.decodeAudioData(arr))
               .then((decoded) => (buffer = decoded || undefined));
 
             if (this.audioContext && buffer) {
@@ -218,15 +216,36 @@ export class Keyboard implements AfterViewInit {
     if (this.selectedInstrument() === '8_bit_computer') source.stop(now + 0.3);
   }
 
-  async loadAudioBuffer(note: string, exts = ['mp3', 'ogg', 'wav']): Promise<void | Response> {
-    for (let ext of exts) {
+  async loadAudioBuffer(
+    note: string,
+    instrument = this.selectedInstrument(),
+    exts = ['mp3', 'ogg', 'wav']
+  ): Promise<AudioBuffer | null> {
+    if (!this.audioContext) return null;
+
+    for (const ext of exts) {
+      const url = `assets/samples/${instrument}/${note}.${ext}`; // <- no leading slash
       try {
-        const response = await fetch(`/assets/samples/${this.selectedInstrument()}/${note}.${ext}`);
-        if (response.ok) return response;
-      } catch (e) {
-        continue;
+        const response = await fetch(url);
+        if (!response.ok) {
+          console.warn(`[Audio] Sample not found: ${url} (status: ${response.status})`);
+          continue;
+        }
+
+        const arrayBuffer = await response.arrayBuffer();
+        try {
+          const decoded = await this.audioContext.decodeAudioData(arrayBuffer);
+          return decoded;
+        } catch (err) {
+          console.error(`[Audio] Failed to decode sample: ${url}`, err);
+        }
+      } catch (err) {
+        console.error(`[Audio] Error fetching sample: ${url}`, err);
       }
     }
+
+    console.error(`[Audio] No valid sample found for note "${note}" (instrument: "${instrument}")`);
+    return null;
   }
 
   changeVolume(newVolume: Event) {
