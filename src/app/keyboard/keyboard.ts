@@ -12,8 +12,7 @@ import {
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
-
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -44,12 +43,12 @@ interface PianoKey {
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
-],
+  ],
   templateUrl: './keyboard.html',
   styleUrl: './keyboard.css',
 })
 export class Keyboard implements AfterViewInit {
-  instruments = ['piano', 'synth'];
+  instruments = ['piano', '8 bit computer'];
   selectedInstrument = signal(this.instruments[0]);
   instrumentSounds: Record<string, AudioBuffer> = {};
 
@@ -214,9 +213,9 @@ export class Keyboard implements AfterViewInit {
     const source = this.audioContext.createBufferSource();
     source.buffer = buffer;
     source.connect(this.gainNode);
-  const now = this.audioContext.currentTime;
+    const now = this.audioContext.currentTime;
     source.start(now);
-    source.stop(now + 0.5);
+    if (this.selectedInstrument() === '8 bit computer') source.stop(now + 0.3);
   }
 
   async loadAudioBuffer(note: string, exts = ['mp3', 'ogg', 'wav']): Promise<void | Response> {
