@@ -54,6 +54,7 @@ export class Keyboard implements AfterViewInit {
 
   keyNotes = keyNotes;
   defaultVolume = 5;
+  isSongPlaying = false;
 
   audioContext?: AudioContext;
   gainNode?: GainNode;
@@ -102,7 +103,7 @@ export class Keyboard implements AfterViewInit {
             return;
           }
         });
-        
+
       });
 
       window.addEventListener('keydown', (e) => {
@@ -153,9 +154,9 @@ export class Keyboard implements AfterViewInit {
   }
   async playSong() {
     if (isPlatformServer(this.platformId)) return;
-    if (!this.selectedSong.value || !this.audioContext) return;
+    if (!this.selectedSong.value || !this.audioContext || this.isSongPlaying) return;
 
-    // make sure context is running when you hit play
+
     if (this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
     }
@@ -164,7 +165,8 @@ export class Keyboard implements AfterViewInit {
     const totalLoopsToPlay = 1;
     const timePerLoop =
       (this.selectedSong.value.piano.at(-1) as PianoKey).noteDelayIndex * bpm * 1000 + bpm * 1000;
-
+    this.isSongPlaying = true;
+    const LAST_NOTE_DELAY = this.selectedSong.value.piano[this.selectedSong.value.piano.length - 1].noteDelayIndex;
     for (let currentLoop = 1; currentLoop <= totalLoopsToPlay; currentLoop++) {
       this.selectedSong.value.piano.forEach((key) => {
         setTimeout(() => {
@@ -183,6 +185,7 @@ export class Keyboard implements AfterViewInit {
           keyElement?.classList.add('active');
 
           setTimeout(() => {
+            if (LAST_NOTE_DELAY === key.noteDelayIndex) this.isSongPlaying = false;
             const mouseUpEvent = new MouseEvent('mouseup', {
               bubbles: true,
               cancelable: true,
@@ -197,6 +200,7 @@ export class Keyboard implements AfterViewInit {
         }, key.noteDelayIndex * bpm * 1000 + timePerLoop * (currentLoop - 1) + (currentLoop > 1 ? bpm * (currentLoop - 1) * 1000 : 0));
       });
     }
+
   }
 
   playNote(note: string) {

@@ -33,9 +33,11 @@
         <div #audioWaves class="absolute left-0 right-0 bottom-0 h-[calc(20dvh)] w-[calc(50dvw)] mx-auto z-0"></div>
 
         <div class="relative flex items-center justify-center">
+            @if(selectedSong.value){
             <button #btnPlay (click)="playSong()" mat-fab color="primary" class="relative z-10">
                 <mat-icon>play_arrow</mat-icon>
             </button>
+            }
         </div>
         <div id="volume" class="relative flex flex-col">
             <div id="volumeSlider" class="bottom-12 right-1/6">
