@@ -102,6 +102,7 @@ export class Keyboard implements AfterViewInit {
             return;
           }
         });
+        
       });
 
       window.addEventListener('keydown', (e) => {
