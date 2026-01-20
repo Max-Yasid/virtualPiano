@@ -1,8 +1,7 @@
-<main class="relative flex flex-col justify-between">
-    <section>
-        <app-paper-background></app-paper-background>
+<main class="relative flex flex-col justify-between min-h-screen">
+    <section class="min-h-fit">
         <header class="p-10 flex flex-row gap-8">
-            <mat-form-field appearance="outline" class="select-field">
+            <mat-form-field appearance="outline">
                 <mat-label>Instrumento</mat-label>
                 <mat-select (selectionChange)="selectedInstrument.set($event.value)">
                     @for (instrument of instruments;track instrument){
@@ -11,7 +10,7 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="select-field">
+            <mat-form-field appearance="outline">
                 <mat-label>Canción</mat-label>
                 <mat-select [formControl]="selectedSong" [panelWidth]="null">
                     @for (song of songs;track song){
@@ -21,7 +20,7 @@
             </mat-form-field>
         </header>
     </section>
-    <section class="flex flex-col items-center justify-center relative z-20 mx-auto h-fit my-auto">
+    <section class="flex flex-col items-center justify-center relative z-20 w-full h-fit my-auto">
         <ul class="set flex">
             @for (note of keyNotesAsArray; track note.keyboardKey){
             <li [id]="note.soundNote"
@@ -51,3 +50,4 @@
     </footer>
 
 </main>
+<app-paper-background></app-paper-background>
