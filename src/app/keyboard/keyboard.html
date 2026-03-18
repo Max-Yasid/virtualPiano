@@ -22,9 +22,8 @@
         <div class="flex flex-row p-10">
             <button mat-raised-button color="primary" (click)="openCreditsInfo()">sobre piano
                 virtual</button>
-            @if(appState.showCreditsInfo()){
-            <app-credits-info class="min-w-1/2 w-80 max-w-full h-full fixed top-0 right-0 z-50" />
-            }
+            <app-credits-info [ngClass]="{'hidden': !appState.showCreditsInfo()}"
+                class="min-w-1/2 w-80 max-w-full h-full fixed top-0 right-0 z-50" />
         </div>
     </section>
     <section class="flex flex-col items-center justify-center relative z-20 w-full h-fit my-auto">

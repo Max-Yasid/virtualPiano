@@ -1,4 +1,4 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -47,6 +47,7 @@ interface PianoKey {
     MatFormFieldModule,
     MatIconModule,
     CreditsInfo,
+    NgClass
   ],
   templateUrl: './keyboard.html',
   styleUrl: './keyboard.css',
