@@ -4,6 +4,7 @@ import {
   Component,
   effect,
   ElementRef,
+  inject,
   Inject,
   PLATFORM_ID,
   signal,
@@ -24,6 +25,8 @@ import { promise } from './songs/silent hill - promise (reprise)';
 import { The_scientist } from './songs/coldplay';
 
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
+import { CreditsInfo } from '../components/credits-info/credits-info';
+import { AppState } from '../shared/services/app-state';
 
 interface PianoKey {
   note: string;
@@ -43,6 +46,7 @@ interface PianoKey {
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
+    CreditsInfo,
   ],
   templateUrl: './keyboard.html',
   styleUrl: './keyboard.css',
@@ -50,6 +54,7 @@ interface PianoKey {
 export class Keyboard implements AfterViewInit {
   instruments = ['piano', '8_bit_computer'];
   selectedInstrument = signal(this.instruments[0]);
+  appState = inject(AppState);
   instrumentSounds: Record<string, AudioBuffer> = {};
 
   keyNotes = keyNotes;
@@ -134,6 +139,11 @@ export class Keyboard implements AfterViewInit {
   ngAfterViewInit() {
     if (isPlatformServer(this.platformId)) return;
   }
+
+  openCreditsInfo() {
+    this.appState.showCreditsInfo.set(true);
+  }
+
   private initAudioMotion() {
     if (this.audioMotion) return;
     if (!this.audioContext || !this.gainNode || !this.audioWaves) return;

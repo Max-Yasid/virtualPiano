@@ -1,5 +1,5 @@
 <main class="relative flex flex-col justify-between min-h-screen">
-    <section class="min-h-fit">
+    <section class="min-h-fit flex flex-row justify-between">
         <header class="p-10 flex flex-row gap-8">
             <mat-form-field appearance="outline">
                 <mat-label>Instrumento</mat-label>
@@ -19,6 +19,13 @@
                 </mat-select>
             </mat-form-field>
         </header>
+        <div class="flex flex-row p-10">
+            <button mat-raised-button color="primary" (click)="openCreditsInfo()">sobre piano
+                virtual</button>
+            @if(appState.showCreditsInfo()){
+            <app-credits-info class="min-w-1/2 w-80 max-w-full h-full fixed top-0 right-0 z-50" />
+            }
+        </div>
     </section>
     <section class="flex flex-col items-center justify-center relative z-20 w-full h-fit my-auto">
         <ul class="set flex">
